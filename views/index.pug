@@ -73,7 +73,7 @@ block content
                               h4 Conceptos
                               each concept in item.element.enriched_text.concepts
                                   a.ls-modal.badge.badge-info(href=concept.dbpedia_resource)=concept.text
-                          if (item.element)
+                          if (item.element && collection=="Publicaciones")
                             button.btn.btn-primary.pull-right(type='button', data-toggle='modal', data-target="#"+item.element.id)
                               | Ver más
                 - i = i + 1

@@ -11,7 +11,7 @@ var discovery = new DiscoveryV1({
   version: 'v1',
   version_date: '2017-11-07'
 });
-var googleApiKey="AIzaSyDRD8zetNJFKdlfYjj3LFGBOGQ80lsJGMg";
+var googleApiKey="AIzaSyABf-usWcp_qo6ysYZHibzU9pBsBOmGMeM";
 var googleCX="014215834012603551619:nsgijffmcpc";
 var collections=[
     //En esta, se ven los passages y hay modal con text
@@ -144,9 +144,11 @@ function googleSearch(text,callback){
     var url="https://www.googleapis.com/customsearch/v1"
     request({url:url, qs:queryProperties}, function(err, res, body) {
       if(err) { console.log(err); return; }
-      var google=JSON.parse(body).items
+      console.log("body",body);
+      console.log("aca",JSON.parse(body).items);
+      var google=JSON.parse(body).items;
       saveFile(google,"google");
-      callback();
+      callback(google.slice(0,3));
       //console.log(response.google);
   });
 }
