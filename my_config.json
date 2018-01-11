@@ -1,0 +1,150 @@
+{
+  "configuration_id": "09c955e1-79ff-4bdf-a585-dd7387ce0597",
+  "name": "Mincyt - Acuicultura",
+  "description": "Configuración de WKS para usar con la POC de Mincyt - Acuicultura",
+  "created": "2017-12-28T19:55:23.230Z",
+  "updated": "2017-12-28T20:23:43.236Z",
+  "conversions": {
+    "pdf": {
+      "heading": {
+        "fonts": [
+          {
+            "level": 1,
+            "min_size": 24,
+            "max_size": 80
+          },
+          {
+            "level": 2,
+            "min_size": 18,
+            "max_size": 24,
+            "bold": false,
+            "italic": false
+          },
+          {
+            "level": 2,
+            "min_size": 18,
+            "max_size": 24,
+            "bold": true
+          },
+          {
+            "level": 3,
+            "min_size": 13,
+            "max_size": 18,
+            "bold": false,
+            "italic": false
+          },
+          {
+            "level": 3,
+            "min_size": 13,
+            "max_size": 18,
+            "bold": true
+          },
+          {
+            "level": 4,
+            "min_size": 11,
+            "max_size": 13,
+            "bold": false,
+            "italic": false
+          }
+        ]
+      }
+    },
+    "word": {
+      "heading": {
+        "fonts": [
+          {
+            "level": 1,
+            "min_size": 24,
+            "bold": false,
+            "italic": false
+          },
+          {
+            "level": 2,
+            "min_size": 18,
+            "max_size": 23,
+            "bold": true,
+            "italic": false
+          },
+          {
+            "level": 3,
+            "min_size": 14,
+            "max_size": 17,
+            "bold": false,
+            "italic": false
+          },
+          {
+            "level": 4,
+            "min_size": 13,
+            "max_size": 13,
+            "bold": true,
+            "italic": false
+          }
+        ],
+        "styles": [
+          {
+            "level": 1,
+            "names": [
+              "pullout heading",
+              "pulloutheading",
+              "header"
+            ]
+          },
+          {
+            "level": 2,
+            "names": [
+              "subtitle"
+            ]
+          }
+        ]
+      }
+    },
+    "html": {
+      "exclude_tags_completely": [
+        "script",
+        "sup"
+      ],
+      "exclude_tags_keep_content": [
+        "font",
+        "em",
+        "span"
+      ],
+      "exclude_content": {
+        "xpaths": []
+      },
+      "keep_content": {
+        "xpaths": []
+      },
+      "exclude_tag_attributes": [
+        "EVENT_ACTIONS"
+      ]
+    },
+    "json_normalizations": [],
+    "segment": {}
+  },
+  "enrichments": [
+    {
+      "enrichment": "natural_language_understanding",
+      "source_field": "text",
+      "destination_field": "enriched_text",
+      "options": {
+        "features": {
+          "keywords": {},
+          "entities": {
+            "sentiment": true,
+            "emotion": false,
+            "limit": 50,
+            "model": "09c955e1-79ff-4bdf-a585-dd7387ce0597"
+          },
+          "emotion": {},
+          "categories": {},
+          "concepts": {
+            "limit": 8,
+            "model": "09c955e1-79ff-4bdf-a585-dd7387ce0597"
+          },
+          "semantic_roles": {}
+        }
+      }
+    }
+  ],
+  "normalizations": []
+}

@@ -1,0 +1,166 @@
+extends layout
+
+block content
+  // Masthead
+  header.masthead.text-white.text-center
+      .overlay
+      .container
+          .row.justify-content-md-center
+              .col-8
+                  h1.mb-5 ¡Hola! ¿Cómo te podemos ayudar?
+              .col-8
+                  form(method="post")
+                      .form-row
+                          .col-12.col-md-9.mb-2.mb-md-0
+                              input.form-control.form-control-lg(type="text", name="text", placeholder="Escribe tu pregunta o palabra clave", value=text)
+                          .col-12.col-md-3
+                              button.btn.btn-block.btn-lg.btn-primary(type="submit") Buscar
+                          .col-12
+                            //- .form-check.form-check-inline(style="float: left;margin-left: 30px;")
+                            //-     input#Todas.form-check-input(type='radio', name='collection',value='', checked=(collection==''  ? true : false))
+                            //-     label.form-check-label(for='Todas') Todas
+                            .form-check.form-check-inline(style="float: left;margin-left: 30px;")
+                                input#Publicaciones.form-check-input(type='radio', name='collection',value='Respuestas', checked=(collection=='Respuestas' ? true : false))
+                                label.form-check-label(for='Respuestas') Respuestas
+                            .form-check.form-check-inline
+                                input#Legislacion-y-normativas.form-check-input(type='radio', name='collection', value='Publicaciones', checked=(collection=='Publicaciones'  ? true : false))
+                                label.form-check-label(for='Publicaciones') Publicaciones
+                            //.form-check.form-check-inline
+                                input#Patentes.form-check-input(type='radio', name='collection', value='Patentes', checked=(collection=='Patentes'  ? true : false))
+                                label.form-check-label(for='Patentes') Patentes
+                            //.form-check.form-check-inline
+                                input#Financiamiento-y-Mercado.form-check-input(type='radio', name='collection', value='Financiamiento y Mercado', checked=(collection=='Financiamiento y Mercado'  ? true : false))
+                                label.form-check-label(for='Financiamiento-y-Mercado') Financiamiento y Mercado
+
+  if response
+    - var n = 0;
+    .container(style="margin-top:50px;margin-bottom:30px;")
+        .row
+            div.col-12
+              h2 Resultados de la búsqueda
+            div.col-12
+              h5=text
+            if response.watson
+              - i = 0
+              each item in response.watson
+                if i < 1
+                  .col-12
+                      .jumbotron
+                          //span.badge.badge-secondary.pull-right=item.score
+                          if (item.element)
+                              span.badge.badge-secondary.pull-right Publicación: #{item.element.extracted_metadata.publicationdate}
+                          if (collection=="Respuestas")
+                              p.lead!=item.element.text
+                          if (collection=="Publicaciones")
+                              p.lead!=item.passage
+                          if (item.element && item.element.enriched_text && item.element.enriched_text.entities)
+                            .conceptos
+                              h4 Entidades
+                              - var j = 0
+                              - ents = {}
+                              each entity in item.element.enriched_text.entities
+                                  if j < 4
+                                      span.badge.badge-warning=entity.text
+                                      - j = j + 1
+                          if (item.element)
+                            if item.element.enriched_text.keywords && false
+                              .keywords
+                                  h4 Keywords
+                                  each keyword in item.element.enriched_text.keywords
+                                      //span.badge.badge-warning=keyword.text
+                          if (item.element)
+                            .conceptos
+                              h4 Conceptos
+                              each concept in item.element.enriched_text.concepts
+                                  a.ls-modal.badge.badge-info(href=concept.dbpedia_resource)=concept.text
+                          if (item.element)
+                            button.btn.btn-primary.pull-right(type='button', data-toggle='modal', data-target="#"+item.element.id)
+                              | Ver más
+                - i = i + 1
+
+        .row
+            div.col-12
+              h2 Otras fuentes en la web
+              if response.google
+                each item in response.google
+                  .card
+                    .card-body
+                        h5.card-title=item.title
+                        p.card-text #{item.snippet}
+                        a.btn.btn-primary.ls-modal(href=item.link) Ver más
+                        a.btn.btn-primary.ls-modal(style={background: 'red',float:'right',color:'white'}) No relevante
+                        a.btn.btn-primary.ls-modal(style={float: 'right',color:'white'}) Relevante
+        .row
+            div.col-12
+              h2 De qué se habla en el mundo
+              iframe(src="//news-explorer.mybluemix.net/?query=aquaculture", width="100%", height="600px")
+
+  footer.footer.bg-light
+      .container
+          .row
+              .col-lg-6.h-100.text-center.text-lg-left.my-auto
+                  ul.list-inline.mb-2
+                      li.list-inline-item
+                          a(href="#") About
+                      li.list-inline-item ⋅
+                      li.list-inline-item
+                          a(href="#") Contact
+                      li.list-inline-item ⋅
+                      li.list-inline-item
+                          a(href="#") Terms of Use
+                      li.list-inline-item ⋅
+                      li.list-inline-item
+                          a(href="#") Privacy Policy
+                  p.text-muted.small.mb-4.mb-lg-0 © Start Bootstrap 2017. All Rights Reserved.
+              .col-lg-6.h-100.text-center.text-lg-right.my-auto
+                  ul.list-inline.mb-0
+                      li.list-inline-item.mr-3
+                          a(href="#")
+                              i.fa.fa-facebook.fa-2x.fa-fw
+                      li.list-inline-item.mr-3
+                          a(href="#")
+                              i.fa.fa-twitter.fa-2x.fa-fw
+                      li.list-inline-item
+                          a(href="#")
+                              i.fa.fa-instagram.fa-2x.fa-fw
+
+  if response && response.watson
+    each item in response.watson
+        .modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true', id=item.id)
+          .modal-dialog.modal-lg
+            .modal-content
+              //.modal-header
+                h5.modal-title Titulo
+                button.close(type='button', data-dismiss='modal', aria-label='Close')
+                span(aria-hidden='true')
+              if (item.element)
+                .modal-body
+                  | !{item.element.text}
+              .modal-footer
+                button.btn.btn-secondary(type='button', data-dismiss='modal') Cerrar
+
+    .modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true', id="googleModal")
+        .modal-dialog
+        .modal-content(style="width:80%; margin:0px auto;")
+            .modal-body
+                .embed-responsive.embed-responsive-4by3
+                    iframe(id="googleIframe", allowfullscreen).embed-responsive-item
+            .modal-footer
+                button.btn.btn-secondary(type='button', data-dismiss='modal') Cerrar
+
+block script
+  script(src="/javascripts/jquery.highlight.js")
+  script.
+    $(function(){
+        $('.ls-modal').on('click', function(e){
+            e.preventDefault();
+            var url = $(this).attr("href");
+            $("#googleIframe").attr('src', url);
+            $("#googleModal").modal();
+        });
+        /*var passages = '#{response}';
+        $.each(passages.watson, function( index, value ) {
+            console.log(value);
+
+        });*/
+    });
